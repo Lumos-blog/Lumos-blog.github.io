@@ -1,0 +1,665 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Lumos">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="BUU-Reverse刷题之旅03[安洵杯 2019]crackMe（SM4、base变表）运行一下，随便输入，会先弹窗，内容是hook success，然后输出wrong，大体流程就是这样  使用IDA32打开程序进行分析 先搜索字符串   得到这些可能有用的字符串，接下来查看main函数逻辑进行分析  可以看到代码很少，我们只看到了提示输入和一个MessageBoxW函数，之前其他的字符串都没">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lumos&#39;s Blog">
+<meta property="og:url" content="http://example.com/2022/11/21/BUU-Reverse%E5%88%B7%E9%A2%98%E4%B9%8B%E6%97%8503/index.html">
+<meta property="og:site_name" content="Lumos&#39;s Blog">
+<meta property="og:description" content="BUU-Reverse刷题之旅03[安洵杯 2019]crackMe（SM4、base变表）运行一下，随便输入，会先弹窗，内容是hook success，然后输出wrong，大体流程就是这样  使用IDA32打开程序进行分析 先搜索字符串   得到这些可能有用的字符串，接下来查看main函数逻辑进行分析  可以看到代码很少，我们只看到了提示输入和一个MessageBoxW函数，之前其他的字符串都没">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tva1.sinaimg.cn/large/0081aNtNly1h8ckxz98ahj30ma0ctn13.jpg">
+<meta property="og:image" content="http://tva1.sinaimg.cn/large/0081aNtNly1h8cl2codj3j30hp03xjty.jpg">
+<meta property="og:image" content="c:\Users\Lumos\AppData\Roaming\Typora\typora-user-images\image-20221121112334538.png">
+<meta property="og:image" content="http://tvax1.sinaimg.cn/large/0081aNtNly1h8cl4ei8bmj30on076tce.jpg">
+<meta property="og:image" content="http://tva1.sinaimg.cn/large/0081aNtNly1h8cl7pbls5j30a206cjt1.jpg">
+<meta property="og:image" content="http://tvax2.sinaimg.cn/large/0081aNtNly1h8clgdpv2oj30ur0bqgws.jpg">
+<meta property="og:image" content="http://tvax1.sinaimg.cn/large/0081aNtNly1h8clh5emhej30n20cu0yn.jpg">
+<meta property="og:image" content="http://tvax3.sinaimg.cn/large/0081aNtNly1h8clid530bj30n40ia45o.jpg">
+<meta property="og:image" content="http://tvax1.sinaimg.cn/large/0081aNtNly1h8cllzav5kj30ry084q6q.jpg">
+<meta property="og:image" content="http://tva1.sinaimg.cn/large/0081aNtNly1h8clok2vkuj30ud0hzqdt.jpg">
+<meta property="og:image" content="http://tvax3.sinaimg.cn/large/0081aNtNly1h8cm0ig7wgj30i00hxdoq.jpg">
+<meta property="og:image" content="http://tvax3.sinaimg.cn/large/0081aNtNly1h8d3bkk004j30ms0i0goi.jpg">
+<meta property="article:published_time" content="2022-11-21T14:14:56.989Z">
+<meta property="article:modified_time" content="2022-11-21T14:14:38.339Z">
+<meta property="article:author" content="Lumos">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://tva1.sinaimg.cn/large/0081aNtNly1h8ckxz98ahj30ma0ctn13.jpg">
+  
+  
+  
+  <title>Lumos&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-21 22:14" pubdate>
+          2022年11月21日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          26 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="BUU-Reverse刷题之旅03"><a href="#BUU-Reverse刷题之旅03" class="headerlink" title="BUU-Reverse刷题之旅03"></a>BUU-Reverse刷题之旅03</h1><h2 id="安洵杯-2019-crackMe（SM4、base变表）"><a href="#安洵杯-2019-crackMe（SM4、base变表）" class="headerlink" title="[安洵杯 2019]crackMe（SM4、base变表）"></a>[安洵杯 2019]crackMe（SM4、base变表）</h2><p>运行一下，随便输入，会先弹窗，内容是hook success，然后输出wrong，大体流程就是这样</p>
+<p><img src="//tva1.sinaimg.cn/large/0081aNtNly1h8ckxz98ahj30ma0ctn13.jpg" srcset="/img/loading.gif" lazyload alt="DIE"></p>
+<p>使用IDA32打开程序进行分析</p>
+<p>先搜索字符串</p>
+<p><img src="//tva1.sinaimg.cn/large/0081aNtNly1h8cl2codj3j30hp03xjty.jpg" srcset="/img/loading.gif" lazyload alt="字符串1"></p>
+<p><img src="C:\Users\Lumos\AppData\Roaming\Typora\typora-user-images\image-20221121112334538.png" srcset="/img/loading.gif" lazyload alt="image-20221121112334538"></p>
+<p>得到这些可能有用的字符串，接下来查看main函数逻辑进行分析</p>
+<p><img src="//tvax1.sinaimg.cn/large/0081aNtNly1h8cl4ei8bmj30on076tce.jpg" srcset="/img/loading.gif" lazyload alt="main函数"></p>
+<p>可以看到代码很少，我们只看到了提示输入和一个MessageBoxW函数，之前其他的字符串都没看到，很奇怪</p>
+<p>第十行有个函数，进去看下，得到</p>
+<p><img src="//tva1.sinaimg.cn/large/0081aNtNly1h8cl7pbls5j30a206cjt1.jpg" srcset="/img/loading.gif" lazyload alt="check函数"></p>
+<p>很明显，这里就是重终点，可以得到Str2&#x3D;<code>&#39;1UTAOIkpyOSWGv/mOYFY4R!!&#39;</code></p>
+<p>我们再次回到main函数，还有一个第8行的函数未知，粗略看一下好像是一个异或加密，循环32轮（后来看了别的师傅的wp知道是SM4加密）</p>
+<p>还有一个字符串没找到呢， base64的字串，我们通过交叉引用找到用它的函数</p>
+<p><img src="//tvax2.sinaimg.cn/large/0081aNtNly1h8clgdpv2oj30ur0bqgws.jpg" srcset="/img/loading.gif" lazyload alt="base64_table交叉引用"></p>
+<p>分别查看两个函数</p>
+<p><img src="//tvax1.sinaimg.cn/large/0081aNtNly1h8clh5emhej30n20cu0yn.jpg" srcset="/img/loading.gif" lazyload alt="412AB0"></p>
+<p><img src="//tvax3.sinaimg.cn/large/0081aNtNly1h8clid530bj30n40ia45o.jpg" srcset="/img/loading.gif" lazyload alt="413090"></p>
+<p>412AB0函数：将base64_table进行了大小写互换的操作，下面是弹窗和注册一个一场函数，还有一个Hander函数</p>
+<p><img src="//tvax1.sinaimg.cn/large/0081aNtNly1h8cllzav5kj30ry084q6q.jpg" srcset="/img/loading.gif" lazyload alt="Hander函数"></p>
+<p>这就是hander函数的内容，先是给v2赋值一字符串，后作为参数传入411172函数，这个411172函数实际上就是SM4加密</p>
+<p><img src="//tva1.sinaimg.cn/large/0081aNtNly1h8clok2vkuj30ud0hzqdt.jpg" srcset="/img/loading.gif" lazyload alt="SM4加密"></p>
+<p>413090：对字符串进行base64加密，且对base表也进行了操作</p>
+<p>这里需要注意的是里面嵌套的for循环，分析之后得知是使用！进行填充，else的操作是将整个表的前24个字节移到了末尾，这就是最终的base64表</p>
+<p>Hander函数中还注册了一个SEH函数，我们查看里面的函数</p>
+<p><img src="//tvax3.sinaimg.cn/large/0081aNtNly1h8cm0ig7wgj30i00hxdoq.jpg" srcset="/img/loading.gif" lazyload alt="SEH包含"></p>
+<p>for循环是将Str2字符串的顺序打乱了，针对于Str1的操作则是跳转至我们刚分析过的BASE64加密函数</p>
+<p>至此，我们就将程序分析的差不多了，现在差最关键的一步，结合程序运行顺序和利用交叉引用搞明白函数之间的调用关系，然后写脚本进行逆向</p>
+<p>根据程序运行也可以顺个差不多，从有hooked字眼的函数接着向下走就可以捋清</p>
+<p>输入字符串–&gt;先将base64大小写字母转换–&gt;注册VEH异常–&gt;SM4加密–&gt;注册SEH异常–&gt;对输入的字符串进行base64变表加密并打乱Str2的顺序</p>
+<p>注意base64加密操作的时候也改变了base64的表</p>
+<p>脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> base64<br><span class="hljs-comment"># import binascii # 用于字符串和十六进制之间的转换</span><br><span class="hljs-keyword">from</span> pysm4 <span class="hljs-keyword">import</span> decrypt<br><br>enc = <span class="hljs-string">&#x27;U1ATIOpkOyWSvGm/YOYFR4==&#x27;</span><br>str01 = <span class="hljs-string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x27;</span><br>str02 = <span class="hljs-string">&#x27;yzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/abcdefghijklmnopqrstuvwx&#x27;</span><br><br>data = base64.b64decode(enc.translate(<span class="hljs-built_in">str</span>.maketrans(str02, str01)))<br>data_hex = data.<span class="hljs-built_in">hex</span>()<br><span class="hljs-built_in">print</span>(data_hex)<br><span class="hljs-comment"># data_hex=0x59d095290df2400614f48d276906874e</span><br><br><span class="hljs-comment"># key01 = b&quot;where_are_u_now?&quot;</span><br><span class="hljs-comment"># print(binascii.b2a_hex(key01))</span><br>cipher_num = <span class="hljs-number">0x59d095290df2400614f48d276906874e</span><br>mk = <span class="hljs-number">0x77686572655f6172655f755f6e6f773f</span><br>flag = decrypt(cipher_num, mk)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;flag&#123;&#x27;</span> + <span class="hljs-built_in">bytes</span>.fromhex(<span class="hljs-built_in">hex</span>(flag)[<span class="hljs-number">2</span>:]).decode() + <span class="hljs-string">&#x27;&#125;&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>flag{SM4foRExcepioN?!}</p>
+<h2 id="QCTF2018-Xman-babymips"><a href="#QCTF2018-Xman-babymips" class="headerlink" title="[QCTF2018]Xman-babymips"></a>[QCTF2018]Xman-babymips</h2><p>逻辑很清楚，直接提取数据写脚本</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br>using namespace <span class="hljs-built_in">std</span>;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> flag[] = &#123;<br>		<span class="hljs-number">0x51</span>, <span class="hljs-number">0x7c</span>, <span class="hljs-number">0x6a</span>, <span class="hljs-number">0x7b</span>, <span class="hljs-number">0x67</span>, <span class="hljs-number">0x52</span>, <span class="hljs-number">0xFD</span>, <span class="hljs-number">0x16</span>, <span class="hljs-number">0xA4</span>, <span class="hljs-number">0x89</span>,<br>		<span class="hljs-number">0xBD</span>, <span class="hljs-number">0x92</span>, <span class="hljs-number">0x80</span>, <span class="hljs-number">0x13</span>, <span class="hljs-number">0x41</span>, <span class="hljs-number">0x54</span>, <span class="hljs-number">0xA0</span>, <span class="hljs-number">0x8D</span>, <span class="hljs-number">0x45</span>, <span class="hljs-number">0x18</span>,<br>		<span class="hljs-number">0x81</span>, <span class="hljs-number">0xDE</span>, <span class="hljs-number">0xFC</span>, <span class="hljs-number">0x95</span>, <span class="hljs-number">0xF0</span>, <span class="hljs-number">0x16</span>, <span class="hljs-number">0x79</span>, <span class="hljs-number">0x1A</span>, <span class="hljs-number">0x15</span>, <span class="hljs-number">0x5B</span>,<br>		<span class="hljs-number">0x75</span>, <span class="hljs-number">0x1F</span><br>	&#125;;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">5</span>; i&lt;<span class="hljs-keyword">sizeof</span>(flag); i++) &#123;<br>		<span class="hljs-keyword">if</span>((i&amp;<span class="hljs-number">1</span>)!=<span class="hljs-number">0</span>)<br>			flag[i] = (flag[i] &lt;&lt; <span class="hljs-number">2</span>) | (flag[i] &gt;&gt; <span class="hljs-number">6</span>);<br>		<span class="hljs-keyword">else</span><br>			flag[i] = (flag[i] &gt;&gt; <span class="hljs-number">2</span>) | (flag[i] &lt;&lt; <span class="hljs-number">6</span>);<br>	&#125;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> k=<span class="hljs-number">0</span>; k&lt;<span class="hljs-keyword">sizeof</span>(flag); k++) &#123;<br>		flag[k]=flag[k]^(<span class="hljs-number">32</span>-k);<br>		<span class="hljs-built_in">cout</span>&lt;&lt;(<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>)flag[k];<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>qctf{ReA11y_4_B@89_mlp5_4_XmAn_}</p>
+<h2 id="UTCTF2020-babymips"><a href="#UTCTF2020-babymips" class="headerlink" title="[UTCTF2020]babymips"></a>[UTCTF2020]babymips</h2><p>逻辑简单，直接编写脚本：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br>using namespace <span class="hljs-built_in">std</span>;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> flag[] = &#123;<br>		<span class="hljs-number">0x62</span>, <span class="hljs-number">0x6C</span>, <span class="hljs-number">0x7F</span>, <span class="hljs-number">0x76</span>, <span class="hljs-number">0x7A</span>, <span class="hljs-number">0x7B</span>, <span class="hljs-number">0x66</span>, <span class="hljs-number">0x73</span>, <span class="hljs-number">0x76</span>, <span class="hljs-number">0x50</span>,<br>		<span class="hljs-number">0x52</span>, <span class="hljs-number">0x7D</span>, <span class="hljs-number">0x40</span>, <span class="hljs-number">0x54</span>, <span class="hljs-number">0x55</span>, <span class="hljs-number">0x79</span>, <span class="hljs-number">0x40</span>, <span class="hljs-number">0x49</span>, <span class="hljs-number">0x47</span>, <span class="hljs-number">0x4D</span>,<br>		<span class="hljs-number">0x74</span>, <span class="hljs-number">0x19</span>, <span class="hljs-number">0x7B</span>, <span class="hljs-number">0x6A</span>, <span class="hljs-number">0x42</span>, <span class="hljs-number">0x0A</span>, <span class="hljs-number">0x4F</span>, <span class="hljs-number">0x52</span>, <span class="hljs-number">0x7D</span>, <span class="hljs-number">0x69</span>,<br>		<span class="hljs-number">0x4F</span>, <span class="hljs-number">0x53</span>, <span class="hljs-number">0x0C</span>, <span class="hljs-number">0x64</span>, <span class="hljs-number">0x10</span>, <span class="hljs-number">0x0F</span>, <span class="hljs-number">0x1E</span>, <span class="hljs-number">0x4A</span>, <span class="hljs-number">0x67</span>, <span class="hljs-number">0x03</span>,<br>		<span class="hljs-number">0x7C</span>, <span class="hljs-number">0x67</span>, <span class="hljs-number">0x02</span>, <span class="hljs-number">0x6A</span>, <span class="hljs-number">0x31</span>, <span class="hljs-number">0x67</span>, <span class="hljs-number">0x61</span>, <span class="hljs-number">0x37</span>, <span class="hljs-number">0x7A</span>, <span class="hljs-number">0x62</span>,<br>		<span class="hljs-number">0x2C</span>, <span class="hljs-number">0x2C</span>, <span class="hljs-number">0x0F</span>, <span class="hljs-number">0x6E</span>, <span class="hljs-number">0x17</span>, <span class="hljs-number">0x00</span>, <span class="hljs-number">0x16</span>, <span class="hljs-number">0x0F</span>, <span class="hljs-number">0x16</span>, <span class="hljs-number">0x0A</span>,<br>		<span class="hljs-number">0x6D</span>, <span class="hljs-number">0x62</span>, <span class="hljs-number">0x73</span>, <span class="hljs-number">0x25</span>, <span class="hljs-number">0x39</span>, <span class="hljs-number">0x76</span>, <span class="hljs-number">0x2E</span>, <span class="hljs-number">0x1C</span>, <span class="hljs-number">0x63</span>, <span class="hljs-number">0x78</span>,<br>		<span class="hljs-number">0x2B</span>, <span class="hljs-number">0x74</span>, <span class="hljs-number">0x32</span>, <span class="hljs-number">0x16</span>, <span class="hljs-number">0x20</span>, <span class="hljs-number">0x22</span>, <span class="hljs-number">0x44</span>, <span class="hljs-number">0x19</span>,<br>	&#125;;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> k=<span class="hljs-number">0</span>; k&lt;<span class="hljs-keyword">sizeof</span>(flag); k++) &#123;<br>		flag[k]=flag[k]^(k+<span class="hljs-number">23</span>);<br>		<span class="hljs-built_in">cout</span>&lt;&lt;(<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>)flag[k];<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>utflag{mips_cpp_gang_5VDm:~&#96;N]ze;)5%vZ&#x3D;C’C(r#$q&#x3D;<em>efD”ZNY_GX&gt;6&amp;sn.wF8$v</em>mvA@’}</p>
+<h2 id="NPUCTF2020-你好sao啊"><a href="#NPUCTF2020-你好sao啊" class="headerlink" title="[NPUCTF2020]你好sao啊"></a>[NPUCTF2020]你好sao啊</h2><p>丢进IDA分析，RxEncode函数是base64变表解密操作（看其他师傅的wp得知），我们需要对得到的数据进行加密</p>
+<p><img src="//tvax3.sinaimg.cn/large/0081aNtNly1h8d3bkk004j30ms0i0goi.jpg" srcset="/img/loading.gif" lazyload alt="加密"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2022/11/21/BUU-Reverse刷题之旅03/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Lumos</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/14/%5B2019%E7%BA%A2%E5%B8%BD%E6%9D%AF%5Dxx/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
